@@ -1,0 +1,21 @@
+{
+	"server": {
+		"port": 4001,
+		"host": "localhost"
+	},
+	"pix": {
+		"url": "http://localhost:5001",
+		"oids": {
+			"aun":"2.16.840.1.113883.3.275",
+			"ssn":"2.16.840.1.113883.4.1"
+		}
+	},
+	"ecrud": {
+		"url":"http://localhost:3001/core"
+	},
+	"path2collection": {
+		"health/clinicalDocuments/historicalData/medicalHistory/serviceTreatmentRecords" : "serviceTreatmentRecords",
+		"health/clinicalDocuments/clinicalAssessments/cpExams" : "disabilityBenefitsQuestionnaires"
+	},
+	"debug": true
+}

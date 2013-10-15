@@ -1,0 +1,34 @@
+{
+  "name": "vsubscribe",
+  "version": "0.1.0",
+  "description": "VLER Subscription Service",
+  "keywords": [
+    "subscribe",
+    "mongo",
+    "cross reference",
+    "niem"
+  ],
+  "author": "Julian Jewel <julian@julianjewel.com>",
+  "main": "./bin/server.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "dependencies": {
+    "config": ">=0.4.30",
+    "connect": ">=2.9.0",
+    "express": ">=3.4.0",
+    "string": ">=1.6.0",
+    "xmldom": ">=0.1.16",
+    "jsesc": ">=0.4.2",
+    "form2json": ">=0.0.4",
+    "underscore": ">=1.5.2",
+    "request": ">=2.27.0",
+    "vcommons": ">=0.1.1"
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/department-of-veterans-affairs/vlerdas-subscribe.git"
+  }
+}
