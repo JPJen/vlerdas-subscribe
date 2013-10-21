@@ -4,6 +4,13 @@
 		"oids": {
 			"aun":"2.16.840.1.113883.3.275",
 			"ssn":"2.16.840.1.113883.4.1"
+		},
+		"retry" : {
+			"retries" : 5,
+			"factor" : 3,
+			"minTimeout" : 1000,
+			"maxTimeout" : 60000,
+			"randomize" : true
 		}
 	},
 	"server": {
