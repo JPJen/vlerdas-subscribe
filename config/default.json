@@ -1,8 +1,4 @@
 {
-	"server": {
-		"port": 4001,
-		"host": "localhost"
-	},
 	"pix": {
 		"url": "http://localhost:5001",
 		"oids": {
@@ -10,8 +6,51 @@
 			"ssn":"2.16.840.1.113883.4.1"
 		}
 	},
-	"ecrud": {
-		"url":"http://localhost:3001/core"
+	"server": {
+		"port": 4001,
+		"host": "localhost"
+	},
+	"secureServer": {
+		"port": 14001,
+		"host": "localhost",
+		"options" : {
+			"key": "config/server.key",
+			"cert": "config/server.crt"
+		}	
+	},
+	"accessControl.DISABLED": {
+		"testuser1": {
+			"accessKeyId": "testuser1",
+			"accessKeySecret": "pa$$w0rd1",
+			"allowMethods": "*"
+		},
+		"testuser2": {
+			"accessKeyId": "testuser2",
+			"accessKeySecret": "pa$$w0rd2",
+			"allowMethods": "POST"
+		}
+	},
+	"ecrud" : {
+		"url" : "http://localhost:3001/core",
+		"retry" : {
+			"retries" : 5,
+			"factor" : 3,
+			"minTimeout" : 1000,
+			"maxTimeout" : 60000,
+			"randomize" : true
+		}
+	},
+	"log" : {
+		"console" : {
+			"level" : "trace",
+			"colorize" : true,
+			"label" : "SUBSCRIBE",
+			"timestamp" : true
+		},
+		"file" : {
+			"level" : "trace",
+			"filename" : "log.log"
+		}
 	},
 	"path2collection": {
 		"health/clinicalDocuments/historicalData/medicalHistory/serviceTreatmentRecords" : "serviceTreatmentRecords",

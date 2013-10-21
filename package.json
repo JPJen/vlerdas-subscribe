@@ -1,6 +1,6 @@
 {
   "name": "vsubscribe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "VLER Subscription Service",
   "keywords": [
     "subscribe",
@@ -23,7 +23,7 @@
     "form2json": ">=0.0.4",
     "underscore": ">=1.5.2",
     "request": ">=2.27.0",
-    "vcommons": ">=0.1.1"
+    "vcommons": ">=0.1.6"
   },
   "devDependencies": {
   },
