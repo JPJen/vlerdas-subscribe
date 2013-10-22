@@ -1,6 +1,6 @@
 {
 	"pix": {
-		"url": "http://localhost:5001",
+		"url": "http://localhost:5001/pix/v1",
 		"oids": {
 			"aun":"2.16.840.1.113883.3.275",
 			"ssn":"2.16.840.1.113883.4.1"
@@ -38,7 +38,7 @@
 		}
 	},
 	"ecrud" : {
-		"url" : "http://localhost:3001/core",
+		"url" : "http://localhost:3001/core/ecrud/v1",
 		"retry" : {
 			"retries" : 5,
 			"factor" : 3,
