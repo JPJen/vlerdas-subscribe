@@ -26,6 +26,7 @@
     "winston": ">=2.27.0",
 	"JSONPath": ">=0.9.1",
     "vcommons": ">=0.1.6",
+ 	"retry": ">=0.6.0",
  	"winston": ">=0.7.2"
    },
   "devDependencies": {
