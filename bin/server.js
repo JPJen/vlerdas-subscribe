@@ -1,11 +1,11 @@
 /**
- * Entry point for the RESTFul Subscription Service. 
+ * Entry point for the RESTFul Subscription Service.
  *
  * Created by: Julian Jewel
  *
  */
 var express = require('express')
-var config = require('config');
+    var config = require('config');
 var _ = require('underscore');
 var bodyParser = require("vcommons").bodyParser;
 // Export config, so that it can be used anywhere
@@ -16,36 +16,58 @@ var logger = Log.getLogger('SUBSCRIBE', config.log);
 var http = require("http");
 var https = require("https");
 var fs = require("fs");
+var cluster = require("cluster");
+var numCPUs = require('os').cpus().length;
 
-logger.info("Starting express application");
-createApp();
+if (cluster.isMaster) {
+    // Fork workers.
+    for (var i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('online', function (worker) {
+        logger.info('A worker with #' + worker.id);
+    });
+    cluster.on('listening', function (worker, address) {
+        logger.info('A worker is now connected to ' + address.address + ':' + address.port);
+    });
+    cluster.on('exit', function (worker, code, signal) {
+        logger.info('worker ' + worker.process.pid + ' died');
+    });
+} else {
+    logger.info("Starting Subscription Application");
+    createApp();
+}
 
 // Create Express App
 function createApp() {
     var app = express();
 
     app.configure(function () {
-		// Log
-       app.use(express.logger());
-       app.use(bodyParser({}));
-
+        // enable web server logging; pipe those log messages through winston
+        var winstonStream = {
+            write : function (message, encoding) {
+                logger.trace(message);
+            }
+        }; // Log
+        app.use(bodyParser({}));
         app.use(app.router);
-        if (config.accessControl) {
-            logger.trace('Setting up access control');
-            var accessControl = require('vcommons').accessControl;
-            app.use(accessControl());
+        //app.use(express.logger({stream: winstonStream}));
+
+        if (config.debug) {
+            app.use(express.errorHandler({
+                    showStack : true,
+                    dumpExceptions : true
+                }));
         }
-		if(config.debug) {
-			app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
-		}
     });
 
-	// Include Router
-	var router = require('../lib/router')();
+    // Include Router
+    var router = require('../lib/router')();
 
-	// Subscribe to changes by certain domain for a person
-	app.post('/lens/v1/:assigningAuthority/:identifier/*', router.submitRequest);
-	
+    // Subscribe to changes by certain domain for a person
+    app.post('/lens/v1/:assigningAuthority/:identifier/*', router.submitRequest);
+
     // Listen
     if (!_.isUndefined(config.server) || !_.isUndefined(config.secureServer)) {
         if (!_.isUndefined(config.server)) {
@@ -65,35 +87,33 @@ function createApp() {
     }
 }
 
+function fixOptions(configOptions) {
+    var options = {};
 
-function fixOptions(configOptions)
-{
-	var options = {};
+    if (!_.isUndefined(configOptions.key) && _.isString(configOptions.key)) {
+        options.key = fs.readFileSync(configOptions.key);
+    }
 
-	if (!_.isUndefined(configOptions.key) && _.isString(configOptions.key)) {
-		options.key = fs.readFileSync(configOptions.key);
-	}
+    if (!_.isUndefined(configOptions.cert) && _.isString(configOptions.cert)) {
+        options.cert = fs.readFileSync(configOptions.cert);
+    }
 
-	if (!_.isUndefined(configOptions.cert) && _.isString(configOptions.cert)) {
-		options.cert = fs.readFileSync(configOptions.cert);
-	}
+    if (!_.isUndefined(configOptions.pfx) && _.isString(configOptions.pfx)) {
+        options.pfx = fs.readFileSync(configOptions.pfx);
+    }
 
-	if (!_.isUndefined(configOptions.pfx) && _.isString(configOptions.pfx)) {
-		options.pfx = fs.readFileSync(configOptions.pfx);
-	}
-
-	return options;
+    return options;
 }
 // Default exception handler
 process.on('uncaughtException', function (err) {
     logger.error('Caught exception: ' + err);
 });
 // Ctrl-C Shutdown
-process.on( 'SIGINT', function() {
-  logger.info("Shutting down from  SIGINT (Crtl-C)" )
-  process.exit( )
+process.on('SIGINT', function () {
+    logger.info("Shutting down from  SIGINT (Crtl-C)")
+    process.exit()
 })
 // Default exception handler
 process.on('exit', function (err) {
-	logger.info('Exiting.. Error:', err);
+    logger.info('Exiting.. Error:', err);
 });
