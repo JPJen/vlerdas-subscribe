@@ -52,7 +52,6 @@ function createApp() {
         }; // Log
         app.use(bodyParser({}));
         app.use(app.router);
-        //app.use(express.logger({stream: winstonStream}));
 
         if (config.debug) {
             app.use(express.errorHandler({
@@ -107,6 +106,7 @@ function fixOptions(configOptions) {
 // Default exception handler
 process.on('uncaughtException', function (err) {
     logger.error('Caught exception: ' + err);
+    process.exit()
 });
 // Ctrl-C Shutdown
 process.on('SIGINT', function () {

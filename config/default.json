@@ -56,7 +56,7 @@
 		},
 		"file" : {
 			"level" : "trace",
-			"filename" : "log.log"
+			"filename" : "subscribe.log"
 		}
 	},
 	"path2collection": {
