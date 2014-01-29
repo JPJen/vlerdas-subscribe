@@ -64,6 +64,13 @@ function createApp() {
     // Include Router
     var router = require('../lib/router')();
 
+    app.get('/subscribe/v1/ping', function(req, res) {
+    	res.writeHead(200, {'Content-Type' : 'text/plain'});
+    	res.write("The VLER DAS subscribe service is up and running!\n");
+    	res.end();
+    	return;
+    });
+
     // Subscribe to changes by certain domain for a person
     app.post('/lens/v1/:assigningAuthority/:identifier/*', router.submitRequest);
 
