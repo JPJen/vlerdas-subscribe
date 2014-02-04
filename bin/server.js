@@ -8,6 +8,7 @@ var express = require('express')
     var config = require('config');
 var _ = require('underscore');
 var bodyParser = require("vcommons").bodyParser;
+
 // Export config, so that it can be used anywhere
 module.exports.config = config;
 
